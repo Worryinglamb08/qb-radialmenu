@@ -121,7 +121,7 @@ end)
 
 RegisterNetEvent('qb-trunk:client:KidnapTrunk')
 AddEventHandler('qb-trunk:client:KidnapTrunk', function()
-    closestPlayer, distance = QBCore.Functions.GetClosestPlayer()
+    closestPlayer, distance = ESX.Game.GetClosestPlayer()
     local closestPlayerPed = GetPlayerPed(closestPlayer)
     if (distance ~= -1 and distance < 2) then
         if isKidnapping then
@@ -133,7 +133,8 @@ AddEventHandler('qb-trunk:client:KidnapTrunk', function()
                 TriggerServerEvent("qb-trunk:server:KidnapTrunk", GetPlayerServerId(closestPlayer), closestVehicle)
             end
         else
-            QBCore.Functions.Notify('You did not kipnap this person!', 'error')
+            --QBCore.Functions.Notify('You did not kipnap this person!', 'error')
+            exports['mythic_notify']:SendAlert('error', 'You did not kipnap this person!')
         end
     end
 end)
@@ -146,7 +147,7 @@ AddEventHandler('qb-trunk:client:KidnapGetIn', function(veh)
     local plate = GetVehicleNumberPlateText(closestVehicle)
 
     if Config.TrunkClasses[vehClass].allowed then
-        QBCore.Functions.TriggerCallback('qb-trunk:server:getTrunkBusy', function(isBusy)
+        ESX.TriggerServerCallback('qb-trunk:server:getTrunkBusy', function(isBusy)
             if not disabledCarCheck(closestVehicle) then
                 if not inTrunk then
                     if not isBusy then
@@ -165,7 +166,8 @@ AddEventHandler('qb-trunk:client:KidnapGetIn', function(veh)
                                 inTrunk = true
                                 Citizen.Wait(500)
                                 SetVehicleDoorShut(closestVehicle, 5, false)
-                                QBCore.Functions.Notify('You\'re in the trunk.', 'success', 4000)
+                                --QBCore.Functions.Notify('You\'re in the trunk.', 'success', 4000)
+                                exports['mythic_notify']:SendAlert('inform', 'You\'re in the trunk.')
                                 TrunkCam(true)
 
                                 isKidnapped = true
@@ -187,21 +189,26 @@ AddEventHandler('qb-trunk:client:KidnapGetIn', function(veh)
                                 SetEntityCollision(PlayerPedId(), true, true)
                                 TrunkCam(false)
                             else
-                                QBCore.Functions.Notify('The trunk is closed?', 'error', 2500)
+                                --QBCore.Functions.Notify('The trunk is closed?', 'error', 2500)
+                                exports['mythic_notify']:SendAlert('error', 'The trunk is closed?')
                             end
                         end
                     else
-                        QBCore.Functions.Notify('Anyone in there yet?', 'error', 2500)
+                        --QBCore.Functions.Notify('Anyone in there yet?', 'error', 2500)
+                        exports['mythic_notify']:SendAlert('error', 'Anyone in there yet?')
                     end 
                 else
-                    QBCore.Functions.Notify('Your already in the trunk', 'error', 2500)
+                    --QBCore.Functions.Notify('Your already in the trunk', 'error', 2500)
+                    exports['mythic_notify']:SendAlert('error', 'Your already in the trunk')
                 end 
             else
-                QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+                --QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+                exports['mythic_notify']:SendAlert('error', 'You cant get in this trunk..')
             end
         end, plate)
     else
-        QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+        --QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+        exports['mythic_notify']:SendAlert('error', 'You cant get in this trunk..')
     end
 end)
 
@@ -214,7 +221,7 @@ AddEventHandler('qb-trunk:client:GetIn', function(isKidnapped)
         local vehClass = GetVehicleClass(closestVehicle)
         local plate = GetVehicleNumberPlateText(closestVehicle)
         if Config.TrunkClasses[vehClass].allowed then
-            QBCore.Functions.TriggerCallback('qb-trunk:server:getTrunkBusy', function(isBusy)
+            ESX.TriggerServerCallback('qb-trunk:server:getTrunkBusy', function(isBusy)
                 if not disabledCarCheck(closestVehicle) then
                     if not inTrunk then
                         if not isBusy then
@@ -232,26 +239,33 @@ AddEventHandler('qb-trunk:client:GetIn', function(isKidnapped)
                                 inTrunk = true
                                 Citizen.Wait(500)
                                 SetVehicleDoorShut(closestVehicle, 5, false)
-                                QBCore.Functions.Notify('You are already in the trunk.', 'Goodluck', 4000)
+                                --QBCore.Functions.Notify('You are already in the trunk.', 'Goodluck', 4000)
+                                exports['mythic_notify']:SendAlert('inform', 'You are already in the trunk.')
                                 TrunkCam(true)
                             else
-                                QBCore.Functions.Notify('Is the trunk closed?', 'error', 2500)
+                                --QBCore.Functions.Notify('Is the trunk closed?', 'error', 2500)
+                                exports['mythic_notify']:SendAlert('error', 'Is the trunk closed?')
                             end
                         else
-                            QBCore.Functions.Notify('Looks like there is some 1 in there?', 'error', 2500)
+                            --QBCore.Functions.Notify('Looks like there is some 1 in there?', 'error', 2500)
+                            exports['mythic_notify']:SendAlert('error', 'Looks like there is some 1 in there?')
                         end 
                     else
-                        QBCore.Functions.Notify('You are already in the trunk', 'error', 2500)
+                        --QBCore.Functions.Notify('You are already in the trunk', 'error', 2500)
+                        exports['mythic_notify']:SendAlert('error', 'You are already in the trunk')
                     end 
                 else
-                    QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+                    --QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+                    exports['mythic_notify']:SendAlert('error', 'You cant get in this trunk..')
                 end
             end, plate)
         else
-            QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+            --QBCore.Functions.Notify('You cant get in this trunk..', 'error', 2500)
+            exports['mythic_notify']:SendAlert('error', 'You cant get in this trunk..')
         end
     else
-        QBCore.Functions.Notify('There is no vehicle to see.', 'error', 2500)
+        --QBCore.Functions.Notify('There is no vehicle to see.', 'error', 2500)
+        exports['mythic_notify']:SendAlert('error', 'There is no vehicle to see.')
     end
 end)
 
@@ -279,7 +293,9 @@ Citizen.CreateThread(function()
                             SetEntityCollision(PlayerPedId(), true, true)
                             TrunkCam(false)
                         else
-                            QBCore.Functions.Notify('Is the trunk closed?', 'error', 2500)
+                            --QBCore.Functions.Notify('Is the trunk closed?', 'error', 2500)
+                            exports['mythic_notify']:SendAlert('error', 'Is the trunk closed?')
+
                         end
                     end
 

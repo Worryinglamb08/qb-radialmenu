@@ -40,10 +40,12 @@ AddEventHandler('hospital:client:TakeBrancard', function()
                 IsAttached = true
             end)
         else
-            QBCore.Functions.Notify("Something went wrong my friend..", 'error')
+            --QBCore.Functions.Notify("Something went wrong my friend..", 'error')
+            exports['mythic_notify']:SendAlert('error', 'Something went wrong my friend..')
         end
     else
-        QBCore.Functions.Notify("Your not near a ambulance..", 'error')
+        --QBCore.Functions.Notify("Your not near a ambulance..", 'error')
+        exports['mythic_notify']:SendAlert('error', 'Your not near a ambulance..')
     end
 end)
 
@@ -67,7 +69,8 @@ AddEventHandler('hospital:client:RemoveBrancard', function()
                 IsLayingOnBed = false
             end
         else
-            QBCore.Functions.Notify('Your to far away!', 'error')
+            --QBCore.Functions.Notify('Your to far away!', 'error')
+            exports['mythic_notify']:SendAlert('error', 'Your to far away!')
         end
     end
 end)
@@ -147,7 +150,7 @@ Citizen.CreateThread(function()
 end)
 
 function GetClosestPlayer()
-    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestPlayers = ESX.Game.GetPlayersInArea()
     local closestDistance = -1
     local closestPlayer = -1
     local coords = GetEntityCoords(PlayerPedId())
@@ -262,7 +265,8 @@ AddEventHandler('qb-radialmenu:client:Result', function(IsBusy, type)
             AttachEntityToEntity(PlayerPed, Object, 0, 0, 0.0, 1.6, 0.0, 0.0, 360.0, 0.0, false, false, false, false, 2, true)
             IsLayingOnBed = true
         else
-            QBCore.Functions.Notify("Deze brancard is al in gebruik!", "error")
+            --QBCore.Functions.Notify("Deze brancard is al in gebruik!", "error")
+            exports['mythic_notify']:SendAlert('error', '¡Esta camilla ya está en uso!')
             IsLayingOnBed = false
         end
     else
@@ -276,7 +280,8 @@ AddEventHandler('qb-radialmenu:client:Result', function(IsBusy, type)
             FreezeEntityPosition(Obj, false)
             IsAttached = true
         else
-            QBCore.Functions.Notify("This brancard is already in use!", "error")
+            --QBCore.Functions.Notify("This brancard is already in use!", "error")
+            exports['mythic_notify']:SendAlert('error', 'This brancard is already in use!')
             IsAttached = false
         end
     end

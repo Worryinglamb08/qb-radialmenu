@@ -998,7 +998,8 @@ function FirstUpper(str)
 end
 
 function Notify(message, color) -- However you want your notifications to be shown, you can switch it up here.
-	QBCore.Functions.Notify(message, color)
+	--QBCore.Functions.Notify(message, color)
+	exports['mythic_notify']:SendAlert('inform', message)
 end
 
 function IsMpPed(ped)

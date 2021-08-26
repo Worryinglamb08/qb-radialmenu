@@ -8,28 +8,16 @@ end)
 RegisterKeyMapping('radialmenu', 'Open Radial Menu', 'keyboard', 'F1')
 
 function setupSubItems()
-    QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.metadata["isdead"] then
-            if PlayerData.job.name == "police" or PlayerData.job.name == "ambulance" then
-                Config.MenuItems[4].items = {
-                    [1] = {
-                        id = 'emergencybutton2',
-                        title = 'Emergencybutton',
-                        icon = '#general',
-                        type = 'client',
-                        event = 'police:client:SendPoliceEmergencyAlert',
-                        shouldClose = true,
-                    },
-                }
-            end
-        else
-            if Config.JobInteractions[PlayerData.job.name] ~= nil and next(Config.JobInteractions[PlayerData.job.name]) ~= nil then
-                Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
-            else 
-                Config.MenuItems[4].items = {}
-            end
-        end
-    end)
+    
+    PlayerData = ESX.GetPlayerData()
+        
+    if Config.JobInteractions[PlayerData.job.name] ~= nil and next(Config.JobInteractions[PlayerData.job.name]) ~= nil then
+        Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
+    else 
+        Config.MenuItems[4].items = {}
+    end
+        
+    
 
     local Vehicle = GetVehiclePedIsIn(PlayerPedId())
 
@@ -163,7 +151,8 @@ end)
 
 RegisterNetEvent('qb-radialmenu:client:noPlayers')
 AddEventHandler('qb-radialmenu:client:noPlayers', function(data)
-    QBCore.Functions.Notify('There arrent any people close', 'error', 2500)
+    --QBCore.Functions.Notify('There arrent any people close', 'error', 2500)
+    exports['mythic_notify']:SendAlert('inform', 'There arrent any people close')
 end)
 
 RegisterNetEvent('qb-radialmenu:client:giveidkaart')
@@ -209,7 +198,8 @@ AddEventHandler('qb-radialmenu:client:openDoor', function(data)
             end
         end
     else
-        QBCore.Functions.Notify('There is no vehicle in sight...', 'error', 2500)
+        --QBCore.Functions.Notify('There is no vehicle in sight...', 'error', 2500)
+        exports['mythic_notify']:SendAlert('error', 'There is no vehicle in sight...')
     end
 end)
 
@@ -234,20 +224,24 @@ AddEventHandler('qb-radialmenu:client:setExtra', function(data)
                     SetVehicleExtra(veh, extra, 1)
                     SetVehicleEngineHealth(veh, enginehealth)
                     SetVehicleBodyHealth(veh, bodydamage)
-                    QBCore.Functions.Notify('Extra ' .. extra .. ' Deactivated', 'error', 2500)
+                    --QBCore.Functions.Notify('Extra ' .. extra .. ' Deactivated', 'error', 2500)
+                    exports['mythic_notify']:SendAlert('error', 'Extra ' .. extra .. ' Deactivated')
                 else
                     enginehealth = GetVehicleEngineHealth(veh)
                     bodydamage = GetVehicleBodyHealth(veh)
                     SetVehicleExtra(veh, extra, 0)
                     SetVehicleEngineHealth(veh, enginehealth)
                     SetVehicleBodyHealth(veh, bodydamage)
-                    QBCore.Functions.Notify('Extra ' .. extra .. ' Activated', 'success', 2500)
+                    --QBCore.Functions.Notify('Extra ' .. extra .. ' Activated', 'success', 2500)
+                    exports['mythic_notify']:SendAlert('success', 'Extra ' .. extra .. ' Activated')
                 end    
             else
-                QBCore.Functions.Notify('Extra ' .. extra .. ' Its not pressent on this vehicle ', 'error', 2500)
+                --QBCore.Functions.Notify('Extra ' .. extra .. ' Its not pressent on this vehicle ', 'error', 2500)
+                exports['mythic_notify']:SendAlert('error', 'Extra ' .. extra .. ' Its not pressent on this vehicle')
             end
         else
-            QBCore.Functions.Notify('Your not a driver of a vehicle !', 'error', 2500)
+            --QBCore.Functions.Notify('Your not a driver of a vehicle !', 'error', 2500)
+            exports['mythic_notify']:SendAlert('error', 'Your not a driver of a vehicle !')
         end
     end
 end)
@@ -281,23 +275,27 @@ AddEventHandler('qb-radialmenu:client:ChangeSeat', function(data)
     local Veh = GetVehiclePedIsIn(PlayerPedId())
     local IsSeatFree = IsVehicleSeatFree(Veh, data.id)
     local speed = GetEntitySpeed(Veh)
-    local HasHarnass = exports['qb-smallresources']:HasHarness()
-    if not HasHarnass then
+    --local HasHarnass = exports['qb-smallresources']:HasHarness()
+    --if not HasHarnass then
         local kmh = (speed * 3.6);  
 
         if IsSeatFree then
-            if kmh <= 100.0 then
+            if kmh <= 1.0 then
                 SetPedIntoVehicle(PlayerPedId(), Veh, data.id)
-                QBCore.Functions.Notify('Your now on the  '..data.title..'!')
+                --QBCore.Functions.Notify('Your now on the  '..data.title..'!')
+                exports['mythic_notify']:SendAlert('inform', 'Your now on the  '..data.title..'!')
             else
-                QBCore.Functions.Notify('The vehicle goes to fast..')
+                --QBCore.Functions.Notify('The vehicle goes to fast..')
+                exports['mythic_notify']:SendAlert('inform', 'The vehicle goes to fast..')
             end
         else
-            QBCore.Functions.Notify('This seat is occupied..')
+            --QBCore.Functions.Notify('This seat is occupied..')
+            exports['mythic_notify']:SendAlert('inform', 'This seat is occupied..')
         end
-    else
-        QBCore.Functions.Notify('You have a race harnas on u cant switch..', 'error')
-    end
+    --else
+        --QBCore.Functions.Notify('You have a race harnas on u cant switch..', 'error')
+        --exports['mythic_notify']:SendAlert('error', 'You have a race harnas on u cant switch..')
+    --end
 end)
 
 function DrawText3Ds(x, y, z, text)
