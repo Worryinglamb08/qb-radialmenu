@@ -23,6 +23,7 @@ div.info * {
 #icons {
 	display: none;
 	filter:url(#drop-shadow);
+    size: 110%;
 }
 
 .container {
@@ -79,7 +80,7 @@ svg.menu > g.sector > path {
 svg.menu > g.sector > text,
 svg.menu > g.sector > use {
     margin-top: 5px;
-    font-size: 3px;
+    font-size: 4px;
     cursor: pointer;
     fill: white;
 }
@@ -104,7 +105,7 @@ svg.menu > g.center > circle {
 svg.menu > g.center > text,
 svg.menu > g.center > use {
     margin-top: 5px;
-    font-size: 2.5px;
+    font-size: 3.5px;
     cursor: pointer;
     fill: white;
 }

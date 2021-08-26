@@ -389,13 +389,13 @@ RadialMenu.prototype.createUseTag = function (x, y, link, parent, center) {
     }
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    svg.setAttribute('x', RadialMenu.numberToString(x) - 5);
-    svg.setAttribute('y', RadialMenu.numberToString(y) - 8);
+    svg.setAttribute('x', RadialMenu.numberToString(x) - 6);
+    svg.setAttribute('y', RadialMenu.numberToString(y) - 9);
     if (center) {
         svg.setAttribute('y', RadialMenu.numberToString(y) - 5);
     }
-    svg.setAttribute('width', '10');
-    svg.setAttribute('height', '10');
+    svg.setAttribute('width', '12');
+    svg.setAttribute('height', '12');
     svg.setAttribute('id', link);
     svg.setAttribute('fill', 'white');
     svg.setAttribute('xmlns', "http://www.w3.org/2000/svg");
